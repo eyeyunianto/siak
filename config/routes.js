@@ -60,35 +60,35 @@ module.exports.routes = {
 
 
   // // // Custom CRUD Rest Routes
-  'get /api/jurusan/:id?': 'JurusanController.find',
-  'post /api/jurusan': 'JurusanController.create',
-  'put /api/jurusan/:id?': 'JurusanController.update',
-  'delete /api/jurusan/:id?': 'JurusanController.destroy',
+  'get /jurusan/:id?': 'JurusanController.find',
+  'post /jurusan': 'JurusanController.create',
+  'put /jurusan/:id?': 'JurusanController.update',
+  'delete /jurusan/:id?': 'JurusanController.destroy',
 
-  'get /api/matakuliah/:id?': 'JurusanController.find',
-  'post /api/matakuliah': 'JurusanController.create',
-  'put /api/matakuliah/:id?': 'JurusanController.update',
-  'delete /api/matakuliah/:id?': 'JurusanController.destroy',
+  'get /matakuliah/:id?': 'JurusanController.find',
+  'post /matakuliah': 'JurusanController.create',
+  'put /matakuliah/:id?': 'JurusanController.update',
+  'delete /matakuliah/:id?': 'JurusanController.destroy',
 
-  'get /api/mahasiswa/:id?': 'JurusanController.find',
-  'post /api/mahasiswa': 'JurusanController.create',
-  'put /api/mahasiswa/:id?': 'JurusanController.update',
-  'delete /api/mahasiswa/:id?': 'JurusanController.destroy',
+  'get /mahasiswa/:id?': 'JurusanController.find',
+  'post /mahasiswa': 'JurusanController.create',
+  'put /mahasiswa/:id?': 'JurusanController.update',
+  'delete /mahasiswa/:id?': 'JurusanController.destroy',
 
-  'get /api/dosen/:id?': 'JurusanController.find',
-  'post /api/dose': 'JurusanController.create',
-  'put /api/dosen/:id?': 'JurusanController.update',
-  'delete /api/dosen/:id?': 'JurusanController.destroy',
+  'get /dosen/:id?': 'JurusanController.find',
+  'post /dose': 'JurusanController.create',
+  'put /dosen/:id?': 'JurusanController.update',
+  'delete /dosen/:id?': 'JurusanController.destroy',
 
-  'get /api/krs/:id?': 'JurusanController.find',
-  'post /api/krs': 'JurusanController.create',
-  'put /api/krs/:id?': 'JurusanController.update',
-  'delete /api/krs/:id?': 'JurusanController.destroy',
+  'get /krs/:id?': 'JurusanController.find',
+  'post /krs': 'JurusanController.create',
+  'put /krs/:id?': 'JurusanController.update',
+  'delete /krs/:id?': 'JurusanController.destroy',
 
-  'get /api/khs/:id?': 'JurusanController.find',
-  'post /api/khs': 'JurusanController.create',
-  'put /api/khs/:id?': 'JurusanController.update',
-  'delete /api/khs/:id?': 'JurusanController.destroy',
+  'get /khs/:id?': 'JurusanController.find',
+  'post /khs': 'JurusanController.create',
+  'put /khs/:id?': 'JurusanController.update',
+  'delete /khs/:id?': 'JurusanController.destroy',
 
   /*
   // But what if you want your home page to display
