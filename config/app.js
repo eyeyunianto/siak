@@ -3,6 +3,21 @@ module.exports = {
   port: 1337,
   oauth: {
     tokenLife: 3600
+  },
+  adapter :{
+    // 'default': 'disk',
+    'default': 'mongo',
+    disk: {
+      module: 'sails-disk'
+    },
+    mongo:{
+      module:'sails-mongo',
+      host: 'localhost',
+      port: '27017',
+      user: 'webapi',
+      password: 'webapi',
+      database: 'apis'
+    }
   } 
 };
 
