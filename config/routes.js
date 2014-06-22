@@ -56,7 +56,39 @@ module.exports.routes = {
   '/api/info': {
     controller: 'InfoController',
     action: 'index'
-  }
+  },
+
+
+  // // // Custom CRUD Rest Routes
+  'get /jurusan/:id?': 'JurusanController.find',
+  'post /jurusan': 'JurusanController.create',
+  'put /jurusan/:id?': 'JurusanController.update',
+  'delete /jurusan/:id?': 'JurusanController.destroy',
+
+  'get /matakuliah/:id?': 'JurusanController.find',
+  'post /matakuliah': 'JurusanController.create',
+  'put /matakuliah/:id?': 'JurusanController.update',
+  'delete /matakuliah/:id?': 'JurusanController.destroy',
+
+  'get /mahasiswa/:id?': 'JurusanController.find',
+  'post /mahasiswa': 'JurusanController.create',
+  'put /mahasiswa/:id?': 'JurusanController.update',
+  'delete /mahasiswa/:id?': 'JurusanController.destroy',
+
+  'get /dosen/:id?': 'JurusanController.find',
+  'post /dose': 'JurusanController.create',
+  'put /dosen/:id?': 'JurusanController.update',
+  'delete /dosen/:id?': 'JurusanController.destroy',
+
+  'get /krs/:id?': 'JurusanController.find',
+  'post /krs': 'JurusanController.create',
+  'put /krs/:id?': 'JurusanController.update',
+  'delete /krs/:id?': 'JurusanController.destroy',
+
+  'get /khs/:id?': 'JurusanController.find',
+  'post /khs': 'JurusanController.create',
+  'put /khs/:id?': 'JurusanController.update',
+  'delete /khs/:id?': 'JurusanController.destroy',
 
   /*
   // But what if you want your home page to display

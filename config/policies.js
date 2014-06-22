@@ -19,6 +19,42 @@ module.exports.policies = {
   '*': true,
   InfoController: {
     'index': 'oauthBearer'
+  },
+  JurusanController: {
+    'find': 'oauthBearer',
+    'create': 'oauthBearer',
+    'update': 'oauthBearer',
+    'destroy': 'oauthBearer'
+  },
+  DosenController: {
+    'find': 'oauthBearer',
+    'create': 'oauthBearer',
+    'update': 'oauthBearer',
+    'destroy': 'oauthBearer'
+  },
+  KhsController: {
+    'find': 'oauthBearer',
+    'create': 'oauthBearer',
+    'update': 'oauthBearer',
+    'destroy': 'oauthBearer'
+  },
+  KrsController: {
+    'find': 'oauthBearer',
+    'create': 'oauthBearer',
+    'update': 'oauthBearer',
+    'destroy': 'oauthBearer'
+  },
+  MahasiswaController: {
+    'find': 'oauthBearer',
+    'create': 'oauthBearer',
+    'update': 'oauthBearer',
+    'destroy': 'oauthBearer'
+  },
+  MatakuliahController: {
+    'find': 'oauthBearer',
+    'create': 'oauthBearer',
+    'update': 'oauthBearer',
+    'destroy': 'oauthBearer'
   }
 
   /*
