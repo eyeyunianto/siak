@@ -58,6 +58,31 @@ module.exports.routes = {
     action: 'index'
   },
 
+  '/jurusan':{
+    view: 'index'
+  },
+
+  '/matakuliah':{
+    view: 'index'
+  },
+
+  '/jurusan':{
+    view: 'index'
+  },
+
+  '/dosen':{
+    view: 'index'
+  },
+
+  '/krs':{
+    view: 'index'
+  },
+  '/khs':{
+    view: 'index'
+  },
+
+
+
 
   // // // Custom CRUD Rest Routes
   'get /api/jurusan/:id?': 'JurusanController.find',
