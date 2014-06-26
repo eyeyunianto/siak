@@ -22,7 +22,7 @@ module.exports = {
 	    var params = req.params.all();
 	    delete params.access_token;
 	    //console.log(params)
-	    matakuliah.create(params, function(err, matakuliah) {
+	    Matakuliah.create(params, function(err, matakuliah) {
 	        if (err) return next(err);
 	        res.status(201);
 	        res.json(matakuliah);
@@ -37,7 +37,7 @@ module.exports = {
 			return next();
 		}
 		if (id) {
-			matakuliah.findOne(id, function(err, matakuliah) {
+			Matakuliah.findOne({'_id':parseInt(id) }, function(err, matakuliah) {
 				if(matakuliah === undefined) return res.notFound();
 				if (err) return next(err);
 				res.json(matakuliah);
@@ -54,7 +54,7 @@ module.exports = {
 				where: where || undefined
 			};
 		    console.log("This is the options", options);    
-			matakuliah.find(options, function(err, matakuliah) {
+			Matakuliah.find(options, function(err, matakuliah) {
 			  if(matakuliah === undefined) return res.notFound();
 			  if (err) return next(err);
 			  res.json(matakuliah);
@@ -78,7 +78,7 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        matakuliah.update(id, criteria, function (err, matakuliah) {
+        Matakuliah.update({'_id':parseInt(id) }, criteria, function (err, matakuliah) {
             if(matakuliah.length === 0) return res.notFound();
             if (err) return next(err);
             res.json(matakuliah);
@@ -91,10 +91,10 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        matakuliah.findOne(id).done(function(err, result) {
+        Matakuliah.findOne({'_id':parseInt(id) }).done(function(err, result) {
             if (err) return res.serverError(err);
             if (!result) return res.notFound();
-            matakuliah.destroy(id, function (err) {
+            Matakuliah.destroy({'_id':parseInt(id) }, function (err) {
                 if (err) return next (err);
                 return res.json(result);
             });

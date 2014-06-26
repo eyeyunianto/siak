@@ -37,7 +37,7 @@ module.exports = {
 			return next();
 		}
 		if (id) {
-			Jurusan.findOne(id, function(err, jurusan) {
+			Jurusan.findOne({'_id':parseInt(id) }, function(err, jurusan) {
 				if(jurusan === undefined) return res.notFound();
 				if (err) return next(err);
 				res.json(jurusan);
@@ -78,7 +78,7 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        Jurusan.update(id, criteria, function (err, jurusan) {
+        Jurusan.update({'_id':parseInt(id) }, criteria, function (err, jurusan) {
             if(jurusan.length === 0) return res.notFound();
             if (err) return next(err);
             res.json(jurusan);
@@ -87,20 +87,29 @@ module.exports = {
 
     //DESTROY action
     destroy: function (req, res, next) {
+
         var id = req.param('id');
+
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        Jurusan.findOne(id).done(function(err, result) {
+
+        Jurusan.findOne({'_id':parseInt(id) }).done(function(err, result) {
             if (err) return res.serverError(err);
+
             if (!result) return res.notFound();
-            Jurusan.destroy(id, function (err) {
+
+            Jurusan.destroy({'_id':parseInt(id) }, function (err) {
+
                 if (err) return next (err);
+
                 return res.json(result);
             });
 
         });
     },
+  
+
 
   /**
    * Overrides for the settings in `config/controllers.js`

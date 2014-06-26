@@ -58,62 +58,62 @@ module.exports.routes = {
     action: 'index'
   },
 
-  '/jurusan':{
-    view: 'index'
-  },
+  // '/jurusan':{
+  //   view: 'index'
+  // },
 
-  '/matakuliah':{
-    view: 'index'
-  },
+  // '/matakuliah':{
+  //   view: 'index'
+  // },
 
-  '/jurusan':{
-    view: 'index'
-  },
+  // '/jurusan':{
+  //   view: 'index'
+  // },
 
-  '/dosen':{
-    view: 'index'
-  },
+  // '/dosen':{
+  //   view: 'index'
+  // },
 
-  '/krs':{
-    view: 'index'
-  },
-  '/khs':{
-    view: 'index'
-  },
+  // '/krs':{
+  //   view: 'index'
+  // },
+  // '/khs':{
+  //   view: 'index'
+  // },
 
 
 
 
   // // // Custom CRUD Rest Routes
-  'get /api/jurusan/:id?': 'JurusanController.find',
-  'post /api/jurusan': 'JurusanController.create',
-  'put /api/jurusan/:id?': 'JurusanController.update',
-  'delete /api/jurusan/:id?': 'JurusanController.destroy',
+  'get /jurusan/:id?': 'JurusanController.find',
+  'post /jurusan': 'JurusanController.create',
+  'put /jurusan/:id?': 'JurusanController.update',
+  'delete /jurusan/:id?': 'JurusanController.destroy',
 
-  'get /api/matakuliah/:id?': 'JurusanController.find',
-  'post /api/matakuliah': 'JurusanController.create',
-  'put /api/matakuliah/:id?': 'JurusanController.update',
-  'delete /api/matakuliah/:id?': 'JurusanController.destroy',
+  'get /matakuliah/:id?': 'MatakuliahController.find',
+  'post /matakuliah': 'MatakuliahController.create',
+  'put /matakuliah/:id?': 'MatakuliahController.update',
+  'delete /matakuliah/:id?': 'MatakuliahController.destroy',
 
-  'get /api/mahasiswa/:id?': 'JurusanController.find',
-  'post /api/mahasiswa': 'JurusanController.create',
-  'put /api/mahasiswa/:id?': 'JurusanController.update',
-  'delete /api/mahasiswa/:id?': 'JurusanController.destroy',
+  'get /mahasiswa/:id?': 'MahasiswaController.find',
+  'post /mahasiswa': 'MahasiswaController.create',
+  'put /mahasiswa/:id?': 'MahasiswaController.update',
+  'delete /mahasiswa/:id?': 'MahasiswaController.destroy',
 
-  'get /api/dosen/:id?': 'JurusanController.find',
-  'post /api/dose': 'JurusanController.create',
-  'put /api/dosen/:id?': 'JurusanController.update',
-  'delete /api/dosen/:id?': 'JurusanController.destroy',
+  'get /dosen/:id?': 'DosenController.find',
+  'post /dosen': 'DosenController.create',
+  'put /dosen/:id?': 'DosenController.update',
+  'delete /dosen/:id?': 'DosenController.destroy',
 
-  'get /api/krs/:id?': 'JurusanController.find',
-  'post /api/krs': 'JurusanController.create',
-  'put /api/krs/:id?': 'JurusanController.update',
-  'delete /api/krs/:id?': 'JurusanController.destroy',
+  'get /krs/:id?': 'KrsController.find',
+  'post /krs': 'KrsController.create',
+  'put /krs/:id?': 'KrsController.update',
+  'delete /krs/:id?': 'KrsController.destroy',
 
-  'get /api/khs/:id?': 'JurusanController.find',
-  'post /api/khs': 'JurusanController.create',
-  'put /api/khs/:id?': 'JurusanController.update',
-  'delete /api/khs/:id?': 'JurusanController.destroy',
+  'get /khs/:id?': 'KhsController.find',
+  'post /khs': 'KhsController.create',
+  'put /khs/:id?': 'KhsController.update',
+  'delete /khs/:id?': 'KhsController.destroy'
 
   /*
   // But what if you want your home page to display

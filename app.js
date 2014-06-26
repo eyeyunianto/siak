@@ -1,10 +1,16 @@
 // Start sails and pass it command line arguments
 require('sails').lift(require('optimist').argv);
 
-//http://167.88.34.42:1337/oauth/authorize?client_id=W95ZYDDK3S&response_type=code&redirect_uri=http://167.88.34.42:1337/&scope=http://167.88.34.42:1337
-// curl -XPOST -d 'client_id=W95ZYDDK3S&client_secret=AVnn5AVPEECHbp84FDStGuvleuuQ0X&grant_type=authorization_code&redirect_uri=http://167.88.34.42:1337&code=CODE' http://167.88.34.42:1337/oauth/token
+// untrustedTestClient created
+// - client_id: 5891Z520HG
+// - client_secret: pq9IKM7sPSIu0yjhmlnrVvz6innDji
+// - redirectURI: http://localhost:1339
+// trustedTestClient created
+// - client_id: L84D9CNTS2
+// - client_secret: uXjTEOxAnYojwYS29cRZhVSVplhxlk
+// - redirectURI: http://localhost:1338
+// Default user created
+// - username: me@gmail.com
+// - password: password
 
-//curl -XPOST "http://167.88.34.42:1337/oauth/token" -d "grant_type=password&client_id=W95ZYDDK3S&client_secret=AVnn5AVPEECHbp84FDStGuvleuuQ0X&username=me@gmail.com&password=password"
-
-//lsof -i :1337
-//kill -9 2791
+//curl -XPOST "http://localhost:1337/oauth/token" -d "grant_type=password&client_id=L84D9CNTS2&client_secret=uXjTEOxAnYojwYS29cRZhVSVplhxlk&username=me@gmail.com&password=password"

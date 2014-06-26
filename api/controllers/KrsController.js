@@ -22,7 +22,7 @@ module.exports = {
 	    var params = req.params.all();
 	    delete params.access_token;
 	    //console.log(params)
-	    krs.create(params, function(err, krs) {
+	    Krs.create(params, function(err, krs) {
 	        if (err) return next(err);
 	        res.status(201);
 	        res.json(krs);
@@ -37,7 +37,7 @@ module.exports = {
 			return next();
 		}
 		if (id) {
-			krs.findOne(id, function(err, krs) {
+			Krs.findOne({'_id':parseInt(id) }, function(err, krs) {
 				if(krs === undefined) return res.notFound();
 				if (err) return next(err);
 				res.json(krs);
@@ -54,7 +54,7 @@ module.exports = {
 				where: where || undefined
 			};
 		    console.log("This is the options", options);    
-			krs.find(options, function(err, krs) {
+			Krs.find(options, function(err, krs) {
 			  if(krs === undefined) return res.notFound();
 			  if (err) return next(err);
 			  res.json(krs);
@@ -78,7 +78,7 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        krs.update(id, criteria, function (err, krs) {
+        Krs.update({'_id':parseInt(id) }, criteria, function (err, krs) {
             if(krs.length === 0) return res.notFound();
             if (err) return next(err);
             res.json(krs);
@@ -91,10 +91,10 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        krs.findOne(id).done(function(err, result) {
+        Krs.findOne({'_id':parseInt(id) }).done(function(err, result) {
             if (err) return res.serverError(err);
             if (!result) return res.notFound();
-            krs.destroy(id, function (err) {
+            Krs.destroy({'_id':parseInt(id) }, function (err) {
                 if (err) return next (err);
                 return res.json(result);
             });

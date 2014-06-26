@@ -22,7 +22,7 @@ module.exports = {
 	    var params = req.params.all();
 	    delete params.access_token;
 	    //console.log(params)
-	    mahasiswa.create(params, function(err, mahasiswa) {
+	    Mahasiswa.create(params, function(err, mahasiswa) {
 	        if (err) return next(err);
 	        res.status(201);
 	        res.json(mahasiswa);
@@ -37,7 +37,7 @@ module.exports = {
 			return next();
 		}
 		if (id) {
-			mahasiswa.findOne(id, function(err, mahasiswa) {
+			Mahasiswa.findOne({'_id':parseInt(id) }, function(err, mahasiswa) {
 				if(mahasiswa === undefined) return res.notFound();
 				if (err) return next(err);
 				res.json(mahasiswa);
@@ -54,7 +54,7 @@ module.exports = {
 				where: where || undefined
 			};
 		    console.log("This is the options", options);    
-			mahasiswa.find(options, function(err, mahasiswa) {
+			Mahasiswa.find(options, function(err, mahasiswa) {
 			  if(mahasiswa === undefined) return res.notFound();
 			  if (err) return next(err);
 			  res.json(mahasiswa);
@@ -78,7 +78,7 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        mahasiswa.update(id, criteria, function (err, mahasiswa) {
+        Mahasiswa.update({'_id':parseInt(id) }, criteria, function (err, mahasiswa) {
             if(mahasiswa.length === 0) return res.notFound();
             if (err) return next(err);
             res.json(mahasiswa);
@@ -91,10 +91,10 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        mahasiswa.findOne(id).done(function(err, result) {
+        Mahasiswa.findOne({'_id':parseInt(id) }).done(function(err, result) {
             if (err) return res.serverError(err);
             if (!result) return res.notFound();
-            mahasiswa.destroy(id, function (err) {
+            Mahasiswa.destroy({'_id':parseInt(id) }, function (err) {
                 if (err) return next (err);
                 return res.json(result);
             });

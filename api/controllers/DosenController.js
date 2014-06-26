@@ -16,13 +16,14 @@
  */
 
 module.exports = {
-    //POST
+    
+  //POST
     create: function(req, res, next) {
     	//console.log(req.params);
 	    var params = req.params.all();
 	    delete params.access_token;
 	    //console.log(params)
-	    dosen.create(params, function(err, dosen) {
+	    Dosen.create(params, function(err, dosen) {
 	        if (err) return next(err);
 	        res.status(201);
 	        res.json(dosen);
@@ -37,7 +38,9 @@ module.exports = {
 			return next();
 		}
 		if (id) {
-			dosen.findOne(id, function(err, dosen) {
+			console.log(id)
+			console.log(Dosen.findOne(id))
+			Dosen.findOne({'_id':parseInt(id) }, function(err, dosen) {
 				if(dosen === undefined) return res.notFound();
 				if (err) return next(err);
 				res.json(dosen);
@@ -54,7 +57,7 @@ module.exports = {
 				where: where || undefined
 			};
 		    console.log("This is the options", options);    
-			dosen.find(options, function(err, dosen) {
+			Dosen.find(options, function(err, dosen) {
 			  if(dosen === undefined) return res.notFound();
 			  if (err) return next(err);
 			  res.json(dosen);
@@ -78,7 +81,7 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        dosen.update(id, criteria, function (err, dosen) {
+        Dosen.update({'_id':parseInt(id)}, criteria, function (err, dosen) {
             if(dosen.length === 0) return res.notFound();
             if (err) return next(err);
             res.json(dosen);
@@ -91,17 +94,17 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        dosen.findOne(id).done(function(err, result) {
+        Dosen.findOne({'_id':parseInt(id)}).done(function(err, result) {
             if (err) return res.serverError(err);
             if (!result) return res.notFound();
-            dosen.destroy(id, function (err) {
+            console.log(result);
+            Dosen.destroy({'_id':parseInt(id)}, function (err) {
                 if (err) return next (err);
                 return res.json(result);
             });
 
         });
     },
-  
 
 
   /**
