@@ -11,20 +11,21 @@
 module.exports.bootstrap = function (cb) {
 
   // Create a user
-  User.findOne({email: 'me@gmail.com'}, function(err, user){
+  User.findOne({email: 'admin@gmail.com'}, function(err, user){
     if(!user){
       User.create({
-  	email: 'me@gmail.com',
-  	password: 'password',
+  	email: 'admin@gmail.com',
+  	password: '4dm1n',
+    status:'admin',
       }).done(function(err,user){
   	console.log("Default user created");
         console.log("- username: " + user.email);
-        console.log("- password: password");
+        console.log("- password: 4dm1n");
       });
     } else {
       console.log('Default user already exists');
       console.log("- username: " + user.email);
-      console.log("- password: password");
+      console.log("- password: 4dm1n");
     }
   });
 
@@ -55,6 +56,64 @@ module.exports.bootstrap = function (cb) {
       }
     }
   }); 
+
+  //Client dosen
+    // Create a trusted application
+  Client.findOne({'name': 'dosen'}, function(err, client){
+    if(err){
+      console.log(err.message);
+    } else {
+      if(!client){
+        Client.create({name : 'dosen',
+                       redirectURI: 'http://localhost:1338',
+                       trusted: true
+        }).done(function(err, client){
+          if(err){
+            console.log(err.message);
+          } else {
+            console.log("dosen created");
+            console.log("- client_id: " + client.clientId);
+            console.log("- client_secret: " + client.clientSecret);
+            console.log("- redirectURI: " + client.redirectURI);
+          }
+        });
+      } else {
+        console.log('dosen already exists');
+        console.log("- client_id: " + client.clientId);
+        console.log("- client_secret: " + client.clientSecret);
+        console.log("- redirectURI: " + client.redirectURI);
+      }
+    }
+  });
+
+  //Mahasiswa
+    // Create a trusted application
+  Client.findOne({'name': 'mahasiswa'}, function(err, client){
+    if(err){
+      console.log(err.message);
+    } else {
+      if(!client){
+        Client.create({name : 'mahasiswa',
+                       redirectURI: 'http://localhost:1338',
+                       trusted: true
+        }).done(function(err, client){
+          if(err){
+            console.log(err.message);
+          } else {
+            console.log("mahasiswa created");
+            console.log("- client_id: " + client.clientId);
+            console.log("- client_secret: " + client.clientSecret);
+            console.log("- redirectURI: " + client.redirectURI);
+          }
+        });
+      } else {
+        console.log('mahasiswa already exists');
+        console.log("- client_id: " + client.clientId);
+        console.log("- client_secret: " + client.clientSecret);
+        console.log("- redirectURI: " + client.redirectURI);
+      }
+    }
+  });
 
   // Create an untrusted application
   Client.findOne({'name': 'untrustedTestClient'}, function(err, client){

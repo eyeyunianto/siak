@@ -17,15 +17,23 @@
 
 module.exports = {
     //POST
+    //db.jurusan.update({ '_id':12}, {$push:{"makul":{"semester":"3","salah":"lima"}}})
     create: function(req, res, next) {
     	//console.log(req.params);
+    	var  jur= req.param('id');
 	    var params = req.params.all();
+	    var params2 = req.body;
 	    delete params.access_token;
+	    delete params.id;
+	    delete params2.access_token;
+	    delete params2.id;
+	    criteria = _.merge({}, params, params2);
+	    Jurusan.update({'kode':jur }, {$push:{'makul':criteria}}, function (err, jurusan) {
 	    //console.log(params)
-	    Matakuliah.create(params, function(err, matakuliah) {
+	    //Jurusan.create(params, function(err, jurusan) {
 	        if (err) return next(err);
 	        res.status(201);
-	        res.json(matakuliah);
+	        res.json(jurusan);
 	    });
 	},
 
@@ -37,10 +45,10 @@ module.exports = {
 			return next();
 		}
 		if (id) {
-			Matakuliah.findOne({'_id':parseInt(id) }, function(err, matakuliah) {
-				if(matakuliah === undefined) return res.notFound();
+			Jurusan.findOne({'kode':id }, function(err, jurusan) {
+				if(jurusan === undefined) return res.notFound();
 				if (err) return next(err);
-				res.json(matakuliah);
+				res.json(jurusan);
 		  });
 		} else {
 			var where = req.param('where');
@@ -54,10 +62,10 @@ module.exports = {
 				where: where || undefined
 			};
 		    console.log("This is the options", options);    
-			Matakuliah.find(options, function(err, matakuliah) {
-			  if(matakuliah === undefined) return res.notFound();
+			Jurusan.find(options, function(err, jurusan) {
+			  if(jurusan === undefined) return res.notFound();
 			  if (err) return next(err);
-			  res.json(matakuliah);
+			  res.json(jurusan);
 			});
 		}
 		function isShortcut(id) {
@@ -67,34 +75,64 @@ module.exports = {
 		}
 	},
 
+// 	[ id: '12100819' ]
+// { access_token: '9OeSAVXn3MMJgpZhbSsqxuKN61xnPXi2lelqmorNdDI3VcwoRauSHB7Rh4ZdEihKnn4UYyplTAB9P5KDBndTPOJtIg5M1cbT2mvSyPQstV3SF2m93MdDDpFzQSCET6jlsMkOwhKYDujuFX7VkW3XgcIkGekpZZibpbQ8BUzxcngXXWHamb1eFQVy9TV8ZqtqV2r2gMB3jasaqE5wYe0VLaFvrEHvG6jUf0MXa9EXrsqUsUOCrvuCICNqXjw5Zc73',
+//   nama: 'Agung H',
+//   jk: 'Laki-laki',
+//   angkatan: '2010',
+//   jurusan: 'Teknik Informatika',
+//   tmp_lahir: 'bantul',
+//   tgl_lahir: '1989-06-13',
+//   email: 'eyeyunianto@gmail.com',
+//   alamat: 'Tulasan RT04 Mulyodadi Bambanglipuro Bantul',
+//   id: '12100819' }
+
+
 	// an UPDATE action
+	//db.matakuliah.update({'Prodi':"Komputerisasi Akuntansi"},{'$pushAll':{'matakuliah':[{"data":[{"kode":"satu","Malam":"dua"}]}]}})
+    
+    //db.jurusan.update({ '_id':12,'makul.semester':'2'}, {$set:{"makul.$":{"salah":"sepuluh"}}})
     update: function (req, res, next) {
         var criteria = {};
-        var params = req.params.all();
+        var  jur= req.param('id');
+        var  kode= req.param('kode');
+	    var params = req.params.all();
+	    var params2 = req.body;
 	    delete params.access_token;
-        //criteria = _.merge({}, req.params.all(), req.body);
-        criteria = _.merge({}, params, req.body);
-        var id = req.param('id');
-        if (!id) {
+	    delete params.id;
+	    delete params2.access_token;
+	    delete params2.id;
+	    criteria = _.merge({}, params, params2);
+	    console.log(jur,kode)
+	    console.log(criteria)
+
+        if (!jur) {
             return res.badRequest('No id provided.');
         }
-        Matakuliah.update({'_id':parseInt(id) }, criteria, function (err, matakuliah) {
-            if(matakuliah.length === 0) return res.notFound();
+        //console.log(criteria)
+        Jurusan.update({'kode':jur,'makul.kode':kode },{'makul.$':criteria}, function (err, jurusan) {
+        //Jurusan.update({'_id':parseInt(jur) }, criteria, function (err, jurusan) {
+            if(jurusan.length === 0) return res.notFound();
             if (err) return next(err);
-            res.json(matakuliah);
+            res.json(jurusan);
         });
     },
 
     //DESTROY action
+    //db.jurusan.update({'_id':11,'makul.salah':'lima'},{$pull:{makul:{'salah':'lima'}}})
     destroy: function (req, res, next) {
         var id = req.param('id');
+        var kode = req.param('kode');
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        Matakuliah.findOne({'_id':parseInt(id) }).done(function(err, result) {
+        Jurusan.findOne({'kode':id }).done(function(err, result) {
             if (err) return res.serverError(err);
             if (!result) return res.notFound();
-            Matakuliah.destroy({'_id':parseInt(id) }, function (err) {
+
+            Jurusan.update({'kode':id,'makul.kode':kode},{$pull:{'makul':{'kode':kode}}},function(err){
+            //Jurusan.destroy({'_id':parseInt(id) }, function (err) {
+
                 if (err) return next (err);
                 return res.json(result);
             });

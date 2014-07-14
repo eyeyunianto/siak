@@ -20,10 +20,18 @@ module.exports = {
     create: function(req, res, next) {
     	//console.log(req.params);
 	    var params = req.params.all();
+	    var nim = req.param('nim');
 	    delete params.access_token;
-	    //console.log(params)
+	    console.log(params)
 	    Mahasiswa.create(params, function(err, mahasiswa) {
 	        if (err) return next(err);
+	        User.create({
+			  	email: nim,
+			  	password: 'mahasiswa',
+			    status:'third',
+			      }).done(function(err,user){
+			  		console.log("Default user created");
+			      });
 	        res.status(201);
 	        res.json(mahasiswa);
 	    });
@@ -31,34 +39,42 @@ module.exports = {
 
   	//GET list
 	find: function (req, res, next) {
+		// req.user = user;
 		var id = req.param('id');
 		var idShortCut = isShortcut(id);
 		if (idShortCut === true) {
 			return next();
 		}
 		if (id) {
-			Mahasiswa.findOne({'_id':parseInt(id) }, function(err, mahasiswa) {
-				if(mahasiswa === undefined) return res.notFound();
-				if (err) return next(err);
-				res.json(mahasiswa);
-		  });
-		} else {
-			var where = req.param('where');
-			if (_.isString(where)) {
-			    where = JSON.parse(where);
+			if (req.user.email==id||req.user.status=='admin'){
+				Mahasiswa.findOne({'nim':id}, function(err, mahasiswa) {
+					if(mahasiswa === undefined) return res.notFound();
+					if (err) return next(err);
+					res.json(mahasiswa);
+			  	});
 			}
-			var options = {
-				limit: req.param('limit') || undefined,
-				skip: req.param('skip')  || undefined,
-				sort: req.param('sort') || undefined,
-				where: where || undefined
-			};
-		    console.log("This is the options", options);    
-			Mahasiswa.find(options, function(err, mahasiswa) {
-			  if(mahasiswa === undefined) return res.notFound();
-			  if (err) return next(err);
-			  res.json(mahasiswa);
-			});
+		} else {
+			if(req.user.status=='admin'){
+				var where = req.param('where');
+				if (_.isString(where)) {
+				    where = JSON.parse(where);
+				}
+				var options = {
+					limit: req.param('limit') || undefined,
+					skip: req.param('skip')  || undefined,
+					sort: req.param('sort') || undefined,
+					where: where || undefined
+				};
+			    console.log("This is the options", options);    
+				Mahasiswa.find(options, function(err, mahasiswa) {
+				  if(mahasiswa === undefined) return res.notFound();
+				  if (err) return next(err);
+				  res.json(mahasiswa);
+				});
+			}else{
+				res.send(401);
+	        	return;
+			}
 		}
 		function isShortcut(id) {
 		  if (id === 'find'   ||  id === 'update' ||  id === 'create' ||  id === 'destroy') {
@@ -71,18 +87,25 @@ module.exports = {
     update: function (req, res, next) {
         var criteria = {};
         var params = req.params.all();
+        var params2 = req.body;
+        var user = req.param('nim');
 	    delete params.access_token;
+	    delete params2.access_token;
+
         //criteria = _.merge({}, req.params.all(), req.body);
-        criteria = _.merge({}, params, req.body);
+        criteria = _.merge({}, params, params2);
+        //console.log(criteria)
         var id = req.param('id');
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        Mahasiswa.update({'_id':parseInt(id) }, criteria, function (err, mahasiswa) {
-            if(mahasiswa.length === 0) return res.notFound();
-            if (err) return next(err);
-            res.json(mahasiswa);
-        });
+        if(req.user.status=='admin'|| req.user.email=user){
+	        Mahasiswa.update({'nim':id }, criteria, function (err, mahasiswa) {
+	            if(mahasiswa.length === 0) return res.notFound();
+	            if (err) return next(err);
+	            res.json(mahasiswa);
+	        });
+	    }
     },
 
     //DESTROY action
@@ -91,15 +114,24 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        Mahasiswa.findOne({'_id':parseInt(id) }).done(function(err, result) {
-            if (err) return res.serverError(err);
-            if (!result) return res.notFound();
-            Mahasiswa.destroy({'_id':parseInt(id) }, function (err) {
-                if (err) return next (err);
-                return res.json(result);
-            });
+        if(req.user.status=='admin'){
+	        Mahasiswa.findOne({'nim':id }).done(function(err, result) {
+	            if (err) return res.serverError(err);
+	            if (!result) return res.notFound();
+	            Mahasiswa.destroy({'nim':id }, function (err) {
+	                if (err) return next (err);
+	                User.destroy({'email':id }, function (err) {
+	                if (err) return next (err);
+		                return res.json(result);
+		            });
+	                return res.json(result);
+	            });
 
-        });
+	        });
+	    }else{
+	    	res.send(401);
+	        return;
+	    }
     },
   
 

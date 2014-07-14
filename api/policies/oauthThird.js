@@ -22,10 +22,18 @@ module.exports = function(req, res, next) {
 	            // res.redirect('/');
 	            return;
 	        }
+	        // if(req.user.status=='admin'){
+	        // 	res.send(401);
+	        // 	return;
+	        // }
 
             delete req.query.access_token;
-	        req.user = user;
-	        console.log(req)
+            req.user = user;
+            if(user.status!='admin'){
+	        	res.send(401);
+	        	return;
+	        }
+	        
 	        return next();
 	    }
 	)(req, res);

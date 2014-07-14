@@ -21,6 +21,9 @@ module.exports = {
     	//console.log(req.params);
 	    var params = req.params.all();
 	    delete params.access_token;
+	    console.log(params);
+	    params.makul=[];
+	    console.log(params);
 	    //console.log(params)
 	    Jurusan.create(params, function(err, jurusan) {
 	        if (err) return next(err);
@@ -37,7 +40,7 @@ module.exports = {
 			return next();
 		}
 		if (id) {
-			Jurusan.findOne({'_id':parseInt(id) }, function(err, jurusan) {
+			Jurusan.findOne({'kode':id }, function(err, jurusan) {
 				if(jurusan === undefined) return res.notFound();
 				if (err) return next(err);
 				res.json(jurusan);
@@ -70,15 +73,17 @@ module.exports = {
 	// an UPDATE action
     update: function (req, res, next) {
         var criteria = {};
+        var params2 = req.body;
         var params = req.params.all();
 	    delete params.access_token;
+	    delete params2.access_token;
         //criteria = _.merge({}, req.params.all(), req.body);
-        criteria = _.merge({}, params, req.body);
+        criteria = _.merge({}, params, params2);
         var id = req.param('id');
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        Jurusan.update({'_id':parseInt(id) }, criteria, function (err, jurusan) {
+        Jurusan.update({'kode':id }, criteria, function (err, jurusan) {
             if(jurusan.length === 0) return res.notFound();
             if (err) return next(err);
             res.json(jurusan);
@@ -94,12 +99,12 @@ module.exports = {
             return res.badRequest('No id provided.');
         }
 
-        Jurusan.findOne({'_id':parseInt(id) }).done(function(err, result) {
+        Jurusan.findOne({'kode':id }).done(function(err, result) {
             if (err) return res.serverError(err);
 
             if (!result) return res.notFound();
 
-            Jurusan.destroy({'_id':parseInt(id) }, function (err) {
+            Jurusan.destroy({'kode':id }, function (err) {
 
                 if (err) return next (err);
 

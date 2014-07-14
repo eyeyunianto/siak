@@ -21,10 +21,18 @@ module.exports = {
     create: function(req, res, next) {
     	//console.log(req.params);
 	    var params = req.params.all();
+	    var nik = req.param('nik');
 	    delete params.access_token;
-	    //console.log(params)
+	    console.log(params)
 	    Dosen.create(params, function(err, dosen) {
 	        if (err) return next(err);
+	        User.create({
+			  	email: nik,
+			  	password: nik,
+			    status:'second',
+			      }).done(function(err,user){
+			  		console.log("Default user created");
+			      });
 	        res.status(201);
 	        res.json(dosen);
 	    });
@@ -38,30 +46,35 @@ module.exports = {
 			return next();
 		}
 		if (id) {
-			console.log(id)
-			console.log(Dosen.findOne(id))
-			Dosen.findOne({'_id':parseInt(id) }, function(err, dosen) {
-				if(dosen === undefined) return res.notFound();
-				if (err) return next(err);
-				res.json(dosen);
-		  });
-		} else {
-			var where = req.param('where');
-			if (_.isString(where)) {
-			    where = JSON.parse(where);
+			if (req.user.email==id||req.user.status=='admin'){
+				Dosen.findOne({'nik':id }, function(err, dosen) {
+					if(dosen === undefined) return res.notFound();
+					if (err) return next(err);
+					res.json(dosen);
+			  	});
 			}
-			var options = {
-				limit: req.param('limit') || undefined,
-				skip: req.param('skip')  || undefined,
-				sort: req.param('sort') || undefined,
-				where: where || undefined
-			};
-		    console.log("This is the options", options);    
-			Dosen.find(options, function(err, dosen) {
-			  if(dosen === undefined) return res.notFound();
-			  if (err) return next(err);
-			  res.json(dosen);
-			});
+		} else {
+			if(req.user.status=='admin'){
+				var where = req.param('where');
+				if (_.isString(where)) {
+				    where = JSON.parse(where);
+				}
+				var options = {
+					limit: req.param('limit') || undefined,
+					skip: req.param('skip')  || undefined,
+					sort: req.param('sort') || undefined,
+					where: where || undefined
+				};
+			    console.log("This is the options", options);    
+				Dosen.find(options, function(err, dosen) {
+				  if(dosen === undefined) return res.notFound();
+				  if (err) return next(err);
+				  res.json(dosen);
+				});
+			}else{
+				res.send(401);
+	        	return;
+			}
 		}
 		function isShortcut(id) {
 		  if (id === 'find'   ||  id === 'update' ||  id === 'create' ||  id === 'destroy') {
@@ -73,19 +86,24 @@ module.exports = {
 	// an UPDATE action
     update: function (req, res, next) {
         var criteria = {};
+        var params2 = req.body;
         var params = req.params.all();
+        var user = req.param('nik');
 	    delete params.access_token;
+	    delete params2.access_token;
         //criteria = _.merge({}, req.params.all(), req.body);
-        criteria = _.merge({}, params, req.body);
+        criteria = _.merge({}, params, params2);
         var id = req.param('id');
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        Dosen.update({'_id':parseInt(id)}, criteria, function (err, dosen) {
-            if(dosen.length === 0) return res.notFound();
-            if (err) return next(err);
-            res.json(dosen);
-        });
+        if(req.user.status=='admin'|| req.user.email=user){
+	        Dosen.update({'nik':id}, criteria, function (err, dosen) {
+	            if(dosen.length === 0) return res.notFound();
+	            if (err) return next(err);
+	            res.json(dosen);
+	        });
+	    }
     },
 
     //DESTROY action
@@ -94,16 +112,24 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        Dosen.findOne({'_id':parseInt(id)}).done(function(err, result) {
-            if (err) return res.serverError(err);
-            if (!result) return res.notFound();
-            console.log(result);
-            Dosen.destroy({'_id':parseInt(id)}, function (err) {
-                if (err) return next (err);
-                return res.json(result);
-            });
+        if(req.user.status=='admin'){
+	        Dosen.findOne({'nik':id }).done(function(err, result) {
+	            if (err) return res.serverError(err);
+	            if (!result) return res.notFound();
+	            Dosen.destroy({'nik':id }, function (err) {
+	                if (err) return next (err);
+	                User.destroy({'email':id }, function (err) {
+	                if (err) return next (err);
+		                return res.json(result);
+		            });
+	                return res.json(result);
+	            });
 
-        });
+	        });
+	    }else{
+	    	res.send(401);
+	        return;
+	    }
     },
 
 

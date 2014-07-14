@@ -27,13 +27,13 @@ module.exports.policies = {
     'destroy': 'oauthBearer'
   },
   DosenController: {
-    'find': 'oauthBearer',
+    'find': 'oauthSecond',
     'create': 'oauthBearer',
-    'update': 'oauthBearer',
+    'update': 'oauthSecond',
     'destroy': 'oauthBearer'
   },
   KhsController: {
-    'find': 'oauthBearer',
+    'find': 'oauthThird',
     'create': 'oauthBearer',
     'update': 'oauthBearer',
     'destroy': 'oauthBearer'
@@ -41,13 +41,13 @@ module.exports.policies = {
   KrsController: {
     'find': 'oauthBearer',
     'create': 'oauthBearer',
-    'update': 'oauthBearer',
+    'update': 'oauthThird',
     'destroy': 'oauthBearer'
   },
   MahasiswaController: {
-    'find': 'oauthBearer',
+    'find': 'oauthThird',
     'create': 'oauthBearer',
-    'update': 'oauthBearer',
+    'update': 'oauthThird',
     'destroy': 'oauthBearer'
   },
   MatakuliahController: {
