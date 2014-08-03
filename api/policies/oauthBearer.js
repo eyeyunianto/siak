@@ -25,7 +25,12 @@ module.exports = function(req, res, next) {
 
             delete req.query.access_token;
 	        req.user = user;
-	        console.log(req)
+	        //console.log(req)
+	        if(user.status!='admin'){
+        		console.log('not admin')
+        		res.send(401);
+        		return;
+	        }
 	        return next();
 	    }
 	)(req, res);

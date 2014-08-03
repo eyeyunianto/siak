@@ -46,7 +46,13 @@ module.exports = {
 			return next();
 		}
 		if (id) {
-			if (req.user.email==id||req.user.status=='admin'){
+			if (req.user.email==id){
+				Dosen.findOne({'nik':id }, function(err, dosen) {
+					if(dosen === undefined) return res.notFound();
+					if (err) return next(err);
+					res.json(dosen);
+			  	});
+			}else if(req.user.status=='admin'){
 				Dosen.findOne({'nik':id }, function(err, dosen) {
 					if(dosen === undefined) return res.notFound();
 					if (err) return next(err);
@@ -97,13 +103,22 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        if(req.user.status=='admin'|| req.user.email=user){
+        if(req.user.status=='admin'){
+        	Dosen.update({'nik':id}, criteria, function (err, dosen) {
+	            if(dosen.length === 0) return res.notFound();
+	            if (err) return next(err);
+	            res.json(dosen);
+	        });
+        }else if(req.user.email=user){
 	        Dosen.update({'nik':id}, criteria, function (err, dosen) {
 	            if(dosen.length === 0) return res.notFound();
 	            if (err) return next(err);
 	            res.json(dosen);
 	        });
-	    }
+	    }else{
+			res.send(401);
+        	return;
+		}
     },
 
     //DESTROY action

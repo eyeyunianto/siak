@@ -16,6 +16,7 @@ module.exports = function(req, res, next) {
 	    'bearer',
 	    function(err, user, info)
 	    {
+
 	        if ((err) || (!user))
 	        {
 	            res.send(401);
@@ -29,11 +30,16 @@ module.exports = function(req, res, next) {
 
             delete req.query.access_token;
             req.user = user;
+            console.log(req)
             if(user.status!='admin'){
-	        	res.send(401);
-	        	return;
+            	if(user.status!='third'){
+            		console.log('not admin')
+	        		res.send(401);
+	        		return;
+	        	}else{
+	        		return next();
+	        	}
 	        }
-	        
 	        return next();
 	    }
 	)(req, res);

@@ -37,7 +37,7 @@ module.exports = {
 			return next();
 		}
 		if (id) {
-			Krs.findOne({'_id':parseInt(id) }, function(err, krs) {
+			Krs.findOne({'nim':id }, function(err, krs) {
 				if(krs === undefined) return res.notFound();
 				if (err) return next(err);
 				res.json(krs);
@@ -71,18 +71,30 @@ module.exports = {
     update: function (req, res, next) {
         var criteria = {};
         var params = req.params.all();
+        var params2 = req.body;
 	    delete params.access_token;
+	    delete params2.access_token;
         //criteria = _.merge({}, req.params.all(), req.body);
-        criteria = _.merge({}, params, req.body);
+        criteria = _.merge({}, params, params2);
         var id = req.param('id');
+        var action = req.param('action');
+        var kode = req.param('kode');
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        Krs.update({'_id':parseInt(id) }, criteria, function (err, krs) {
+        if(!action){
+        	Krs.update({'nim':id }, {$push: {krs:criteria}}, function (err, krs) {
             if(krs.length === 0) return res.notFound();
             if (err) return next(err);
-            res.json(krs);
-        });
+	            res.json(krs);
+	        });
+        }else{
+        	Krs.update({'nim':id }, {$pull: {krs:{'kode':kode}}}, function (err, krs) {
+            if(krs.length === 0) return res.notFound();
+            if (err) return next(err);
+	            res.json(krs);
+	        });
+        }
     },
 
     //DESTROY action
@@ -91,10 +103,10 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        Krs.findOne({'_id':parseInt(id) }).done(function(err, result) {
+        Krs.findOne({'nim':id }).done(function(err, result) {
             if (err) return res.serverError(err);
             if (!result) return res.notFound();
-            Krs.destroy({'_id':parseInt(id) }, function (err) {
+            Krs.destroy({'nim':id }, function (err) {
                 if (err) return next (err);
                 return res.json(result);
             });

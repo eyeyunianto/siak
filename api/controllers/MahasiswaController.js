@@ -46,7 +46,14 @@ module.exports = {
 			return next();
 		}
 		if (id) {
-			if (req.user.email==id||req.user.status=='admin'){
+			if (req.user.email==id){
+				Mahasiswa.findOne({'nim':id}, function(err, mahasiswa) {
+					if(mahasiswa === undefined) return res.notFound();
+					if (err) return next(err);
+					res.json(mahasiswa);
+			  	});
+			}
+			if(req.user.status=='admin'){
 				Mahasiswa.findOne({'nim':id}, function(err, mahasiswa) {
 					if(mahasiswa === undefined) return res.notFound();
 					if (err) return next(err);
@@ -99,13 +106,76 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        if(req.user.status=='admin'|| req.user.email=user){
-	        Mahasiswa.update({'nim':id }, criteria, function (err, mahasiswa) {
+        if(req.user.status=='admin'){
+        	Mahasiswa.update({'nim':id }, criteria, function (err, mahasiswa) {
 	            if(mahasiswa.length === 0) return res.notFound();
 	            if (err) return next(err);
 	            res.json(mahasiswa);
 	        });
-	    }
+        }else if(req.user.email=id){
+        	Mahasiswa.update({'nim':id }, criteria, function (err, mahasiswa) {
+	            if(mahasiswa.length === 0) return res.notFound();
+	            if (err) return next(err);
+	            res.json(mahasiswa);
+	        });
+        }else{
+        	res.send(401);
+	        return;
+        }
+    },
+    open: function (req, res, next) {
+        var criteria = {};
+        var params = req.params.all();
+        var params2 = req.body;
+        var user = req.param('nim');
+	    delete params.access_token;
+	    delete params2.access_token;
+
+        //criteria = _.merge({}, req.params.all(), req.body);
+        criteria = _.merge({}, params, params2);
+        //console.log(criteria)
+        var id = req.param('id');
+        if (!id) {
+            return res.badRequest('No id provided.');
+        }
+        if(req.user.status=='admin'){
+        	console.log(id)
+        	Mahasiswa.update({'nim':id }, {'krs':true}, function (err, mahasiswa) {
+	            if(mahasiswa.length === 0) return res.notFound();
+	            if (err) return next(err);
+	            res.json(mahasiswa);
+	        });
+        }else{
+        	res.send(401);
+	        return;
+        }
+    },
+
+    close: function (req, res, next) {
+        var criteria = {};
+        var params = req.params.all();
+        var params2 = req.body;
+        var user = req.param('nim');
+	    delete params.access_token;
+	    delete params2.access_token;
+
+        //criteria = _.merge({}, req.params.all(), req.body);
+        criteria = _.merge({}, params, params2);
+        //console.log(criteria)
+        var id = req.param('id');
+        if (!id) {
+            return res.badRequest('No id provided.');
+        }
+        if(req.user.status=='admin'){
+        	Mahasiswa.update({'nim':id }, {'krs':false}, function (err, mahasiswa) {
+	            if(mahasiswa.length === 0) return res.notFound();
+	            if (err) return next(err);
+	            res.json(mahasiswa);
+	        });
+        }else{
+        	res.send(401);
+	        return;
+        }
     },
 
     //DESTROY action

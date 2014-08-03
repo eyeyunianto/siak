@@ -98,6 +98,8 @@ module.exports.routes = {
   'get /mahasiswa/:id?': 'MahasiswaController.find',
   'post /mahasiswa': 'MahasiswaController.create',
   'put /mahasiswa/:id?': 'MahasiswaController.update',
+  'put /mahasiswa/open/:id?': 'MahasiswaController.open',
+  'put /mahasiswa/close/:id?': 'MahasiswaController.close',
   'delete /mahasiswa/:id?': 'MahasiswaController.destroy',
 
   'get /dosen/:id?': 'DosenController.find',

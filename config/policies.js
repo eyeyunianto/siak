@@ -39,7 +39,7 @@ module.exports.policies = {
     'destroy': 'oauthBearer'
   },
   KrsController: {
-    'find': 'oauthBearer',
+    'find': 'oauthThird',
     'create': 'oauthBearer',
     'update': 'oauthThird',
     'destroy': 'oauthBearer'
@@ -48,7 +48,9 @@ module.exports.policies = {
     'find': 'oauthThird',
     'create': 'oauthBearer',
     'update': 'oauthThird',
-    'destroy': 'oauthBearer'
+    'destroy': 'oauthBearer',
+    'open': 'oauthBearer',
+    'close': 'oauthBearer'
   },
   MatakuliahController: {
     'find': 'oauthBearer',
