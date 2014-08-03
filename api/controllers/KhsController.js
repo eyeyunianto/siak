@@ -75,14 +75,32 @@ module.exports = {
         //criteria = _.merge({}, req.params.all(), req.body);
         criteria = _.merge({}, params, req.body);
         var id = req.param('id');
+        var khs = req.param('khs');
+        var action = req.param('action');
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        Khs.update({'_id':parseInt(id) }, criteria, function (err, khs) {
-            if(khs.length === 0) return res.notFound();
-            if (err) return next(err);
-            res.json(khs);
-        });
+        if(!khs){
+	        Khs.update({'_id':parseInt(id) }, criteria, function (err, khs) {
+	            if(khs.length === 0) return res.notFound();
+	            if (err) return next(err);
+	            res.json(khs);
+	        });
+	    }else{
+	    	if(!action){
+	    		Khs.update({'nim':id }, {$push: {'khs':khs}}, function (err, krs) {
+	            if(krs.length === 0) return res.notFound();
+	            if (err) return next(err);
+		            res.json(krs);
+		        });
+	    	}else{
+	    		Khs.update({'nim':id }, {$pull: {'khs':khs}}, function (err, krs) {
+	            if(krs.length === 0) return res.notFound();
+	            if (err) return next(err);
+		            res.json(krs);
+		        });
+	    	}
+	    }
     },
 
     //DESTROY action
@@ -91,10 +109,10 @@ module.exports = {
         if (!id) {
             return res.badRequest('No id provided.');
         }
-        Khs.findOne({'_id':parseInt(id) }).done(function(err, result) {
+        Khs.findOne({'nim':id }).done(function(err, result) {
             if (err) return res.serverError(err);
             if (!result) return res.notFound();
-            Khs.destroy({'_id':parseInt(id) }, function (err) {
+            Khs.destroy({'nim':id }, function (err) {
                 if (err) return next (err);
                 return res.json(result);
             });

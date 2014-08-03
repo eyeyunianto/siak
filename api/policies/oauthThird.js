@@ -30,7 +30,6 @@ module.exports = function(req, res, next) {
 
             delete req.query.access_token;
             req.user = user;
-            console.log(req)
             if(user.status!='admin'){
             	if(user.status!='third'){
             		console.log('not admin')

@@ -72,13 +72,19 @@ module.exports = {
         var criteria = {};
         var params = req.params.all();
         var params2 = req.body;
-	    delete params.access_token;
-	    delete params2.access_token;
-        //criteria = _.merge({}, req.params.all(), req.body);
-        criteria = _.merge({}, params, params2);
         var id = req.param('id');
         var action = req.param('action');
         var kode = req.param('kode');
+
+	    delete params.access_token;
+	    delete params2.access_token;
+	    delete params.id;
+	    delete params2.id;
+
+	    console.log(params)
+        //criteria = _.merge({}, req.params.all(), req.body);
+        criteria = _.merge({}, params, params2);
+        
         if (!id) {
             return res.badRequest('No id provided.');
         }
