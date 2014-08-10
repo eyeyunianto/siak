@@ -115,7 +115,12 @@ module.exports.routes = {
   'get /khs/:id?': 'KhsController.find',
   'post /khs': 'KhsController.create',
   'put /khs/:id?': 'KhsController.update',
-  'delete /khs/:id?': 'KhsController.destroy'
+  'delete /khs/:id?': 'KhsController.destroy',
+
+  'get /nilai/:id?': 'NilaiController.find',
+  'post /nilai': 'NilaiController.create',
+  'put /nilai/:id?': 'NilaiController.update',
+  'delete /nilai/:id?': 'NilaiController.destroy'
 
   /*
   // But what if you want your home page to display

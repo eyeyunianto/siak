@@ -57,6 +57,12 @@ module.exports.policies = {
     'create': 'oauthBearer',
     'update': 'oauthBearer',
     'destroy': 'oauthBearer'
+  },
+  NilaiController: {
+    'find': 'oauthBearer',
+    'create': 'oauthBearer',
+    'update': 'oauthBearer',
+    'destroy': 'oauthBearer'
   }
 
   /*
